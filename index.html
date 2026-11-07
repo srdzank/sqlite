@@ -53,20 +53,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
     </figure>
     <div id="screen"></div>
 
-    <!-- Чист Текстов Бројач (без слики) -->
+    <!-- Чист Текстов Бројач (преку CounterAPI) -->
     <div id="floating-counter">
       Visitors: <span id="visitor-count">...</span>
     </div>
 
     <script type="text/javascript">
-        // Се повикува API-то за зголемување на бројот на посети
-        fetch('https://api.countapi.xyz/hit/srdzank.github.io-sqliteWeb/visits')
+        // Користиме алтернативен сигурен endpoint за броење посети
+        fetch('https://api.counterapi.dev/v1/srdzank/sqliteWeb/hit')
           .then(res => res.json())
           .then(data => {
-            document.getElementById('visitor-count').innerText = data.value;
+            document.getElementById('visitor-count').innerText = data.count;
           })
           .catch(() => {
-            document.getElementById('visitor-count').innerText = '1+';
+            document.getElementById('visitor-count').innerText = 'N/A';
           });
 
         async function init()
