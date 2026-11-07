@@ -20,18 +20,25 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
       html, body { padding: 0; margin: 0; overflow: hidden; height: 100% }
       #screen { width: 100%; height: 100%; }
 
-      /* Пловечки бројач кој ќе се гледа преку Canvas-от */
+      /* Пловечки текстов бројач кој ќе се гледа преку Canvas-от */
       #floating-counter {
         position: fixed;
-        bottom: 10px;
-        right: 10px;
+        bottom: 12px;
+        right: 12px;
         z-index: 999999;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 4px 8px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        background: #2b2b2b;
+        color: #e0e0e0;
+        border: 1px solid #444;
+        font-family: monospace, sans-serif;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+        pointer-events: none;
+      }
+      #visitor-count {
+        color: #00ea90;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -46,12 +53,22 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
     </figure>
     <div id="screen"></div>
 
-    <!-- Бројач што лебди долу десно -->
+    <!-- Чист Текстов Бројач (без слики) -->
     <div id="floating-counter">
-      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fsrdzank.github.io%2FsqliteWeb&count_bg=%237952B3&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visitors&edge_flat=false" alt="Visits Badge"/>
+      Visitors: <span id="visitor-count">...</span>
     </div>
 
     <script type="text/javascript">
+        // Се повикува API-то за зголемување на бројот на посети
+        fetch('https://api.countapi.xyz/hit/srdzank.github.io-sqliteWeb/visits')
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById('visitor-count').innerText = data.value;
+          })
+          .catch(() => {
+            document.getElementById('visitor-count').innerText = '1+';
+          });
+
         async function init()
         {
             const spinner = document.querySelector('#qtspinner');
