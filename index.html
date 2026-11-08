@@ -47,7 +47,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
           color: #2c3e50;
           line-height: 1.5;
-          position: relative; /* Овозможува апсолутно позиционирање на close копчето внатре */
+          position: relative;
       }
       
       /* Close копче во горниот десен агол на дијалогот */
@@ -74,7 +74,7 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
           margin-bottom: 12px;
           color: #1a252f;
           font-size: 1.4rem;
-          padding-right: 25px; /* Да не го удира насловот во X копчето */
+          padding-right: 25px;
       }
       .modal-content h3 {
           margin-top: 16px;
@@ -103,11 +103,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
           text-decoration: underline;
       }
 
-      /* About Button (Top Right of screen) */
+      /* About Button (Bottom Left of screen) */
       #info-btn {
           position: fixed;
-          top: 12px;
-          right: 12px;
+          bottom: 12px;
+          left: 12px;
           z-index: 999;
           background: rgba(26, 37, 47, 0.85);
           color: white;
@@ -127,13 +127,13 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
   </head>
   <body onload="init()">
 
-    <!-- Button to toggle the info modal -->
+    <!-- Button to toggle the info modal (positioned bottom-left) -->
     <button id="info-btn" onclick="toggleDialog(true)">About App</button>
 
     <!-- Modal Dialog with App Info & Details -->
     <div id="info-modal" class="modal-overlay" onclick="handleOutsideClick(event)">
       <div class="modal-content">
-        <!-- Close (X) копче горе десно -->
+        <!-- Close (X) копче горе десно во дијалогот -->
         <button class="modal-close-btn" onclick="toggleDialog(false)" title="Close">&times;</button>
 
         <h2>About WinSQLite Editor</h2>
