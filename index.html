@@ -47,12 +47,34 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
           color: #2c3e50;
           line-height: 1.5;
+          position: relative; /* Овозможува апсолутно позиционирање на close копчето внатре */
       }
+      
+      /* Close копче во горниот десен агол на дијалогот */
+      .modal-close-btn {
+          position: absolute;
+          top: 14px;
+          right: 18px;
+          background: transparent;
+          border: none;
+          font-size: 24px;
+          font-weight: bold;
+          color: #7f8c8d;
+          cursor: pointer;
+          line-height: 1;
+          padding: 0;
+          transition: color 0.2s ease;
+      }
+      .modal-close-btn:hover {
+          color: #2c3e50;
+      }
+
       .modal-content h2 {
           margin-top: 0;
           margin-bottom: 12px;
           color: #1a252f;
           font-size: 1.4rem;
+          padding-right: 25px; /* Да не го удира насловот во X копчето */
       }
       .modal-content h3 {
           margin-top: 16px;
@@ -80,24 +102,8 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
       .modal-content a:hover {
           text-decoration: underline;
       }
-      .modal-content button {
-          background-color: #3498db;
-          color: white;
-          border: none;
-          padding: 10px 22px;
-          font-size: 14px;
-          font-weight: 600;
-          border-radius: 6px;
-          cursor: pointer;
-          float: right;
-          margin-top: 18px;
-          transition: background-color 0.2s ease;
-      }
-      .modal-content button:hover {
-          background-color: #2980b9;
-      }
 
-      /* About Button (Top Right) */
+      /* About Button (Top Right of screen) */
       #info-btn {
           position: fixed;
           top: 12px;
@@ -125,8 +131,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
     <button id="info-btn" onclick="toggleDialog(true)">About App</button>
 
     <!-- Modal Dialog with App Info & Details -->
-    <div id="info-modal" class="modal-overlay">
+    <div id="info-modal" class="modal-overlay" onclick="handleOutsideClick(event)">
       <div class="modal-content">
+        <!-- Close (X) копче горе десно -->
+        <button class="modal-close-btn" onclick="toggleDialog(false)" title="Close">&times;</button>
+
         <h2>About WinSQLite Editor</h2>
         <p>A native, high-performance SQLite visual management tool powered by <strong>C++ and Qt 6</strong>, compiled for WebAssembly.</p>
         
@@ -141,12 +150,9 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
         <p>This project is entirely open-source! You can explore the codebase, report issues, or contribute on GitHub:</p>
         <p>👉 <a href="https://github.com/srdzank/WinSQLite-Editor" target="_blank" rel="noopener noreferrer">github.com/srdzank/WinSQLite-Editor</a></p>
         
-        <p style="margin-top: 12px; background: #f8f9fa; padding: 10px; border-left: 3px solid #3498db; border-radius: 4px;">
+        <p style="margin-top: 14px; background: #f8f9fa; padding: 10px; border-left: 3px solid #3498db; border-radius: 4px;">
           💬 <strong>Open for Collaboration:</strong> If you are interested in custom feature integrations, systems architecture consulting, or collaborative development, feel free to reach out or open a discussion on GitHub.
         </p>
-
-        <button onclick="toggleDialog(false)">Close</button>
-        <div style="clear: both;"></div>
       </div>
     </div>
 
@@ -165,6 +171,20 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
             const modal = document.querySelector('#info-modal');
             modal.style.display = show ? 'flex' : 'none';
         }
+
+        // Затворање при кликнување на сивата позадина надвор од дијалогот
+        function handleOutsideClick(event) {
+            if (event.target.id === 'info-modal') {
+                toggleDialog(false);
+            }
+        }
+
+        // Затворање со копчето Escape на тастатурата
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                toggleDialog(false);
+            }
+        });
 
         async function init()
         {
