@@ -20,17 +20,17 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
     <title>sqlite_visual_editor</title>
     <style>
       /* Make the html body cover the entire (visual) viewport with no scroll bars. */
-      html, body { padding: 0; margin: 0; overflow: hidden; height: 100%; font-family: sans-serif; }
+      html, body { padding: 0; margin: 0; overflow: hidden; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
       #screen { width: 100%; height: 100%; }
 
-      /* Стили за дијалогот (модал прозорец) */
+      /* Modal Dialog Styling */
       .modal-overlay {
           position: fixed;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba(0, 0, 0, 0.65);
           display: flex;
           justify-content: center;
           align-items: center;
@@ -38,74 +38,114 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
       }
       .modal-content {
           background: #ffffff;
-          padding: 25px 30px;
-          border-radius: 8px;
-          max-width: 500px;
+          padding: 28px 32px;
+          border-radius: 10px;
+          max-width: 540px;
           width: 90%;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-          text-align: left;
-          color: #333;
+          max-height: 85vh;
+          overflow-y: auto;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+          color: #2c3e50;
+          line-height: 1.5;
       }
       .modal-content h2 {
           margin-top: 0;
+          margin-bottom: 12px;
+          color: #1a252f;
+          font-size: 1.4rem;
+      }
+      .modal-content h3 {
+          margin-top: 16px;
+          margin-bottom: 8px;
+          font-size: 1.05rem;
           color: #2c3e50;
+      }
+      .modal-content p {
+          margin: 8px 0;
+          font-size: 0.95rem;
       }
       .modal-content ul {
           padding-left: 20px;
+          margin: 8px 0;
+          font-size: 0.95rem;
+      }
+      .modal-content li {
+          margin-bottom: 6px;
+      }
+      .modal-content a {
+          color: #3498db;
+          text-decoration: none;
+          word-break: break-all;
+      }
+      .modal-content a:hover {
+          text-decoration: underline;
       }
       .modal-content button {
           background-color: #3498db;
           color: white;
           border: none;
-          padding: 10px 20px;
+          padding: 10px 22px;
           font-size: 14px;
-          border-radius: 4px;
+          font-weight: 600;
+          border-radius: 6px;
           cursor: pointer;
           float: right;
-          margin-top: 15px;
+          margin-top: 18px;
+          transition: background-color 0.2s ease;
       }
       .modal-content button:hover {
           background-color: #2980b9;
       }
 
-      /* Копче за повторно отварање на упатството */
+      /* About Button (Top Right) */
       #info-btn {
           position: fixed;
-          top: 10px;
-          right: 10px;
+          top: 12px;
+          right: 12px;
           z-index: 999;
-          background: rgba(0, 0, 0, 0.7);
+          background: rgba(26, 37, 47, 0.85);
           color: white;
-          border: none;
-          padding: 8px 12px;
-          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          padding: 8px 14px;
+          border-radius: 6px;
           cursor: pointer;
           font-size: 13px;
+          font-weight: 500;
+          backdrop-filter: blur(4px);
+          transition: background 0.2s ease;
       }
       #info-btn:hover {
-          background: rgba(0, 0, 0, 0.9);
+          background: rgba(26, 37, 47, 1);
       }
     </style>
   </head>
   <body onload="init()">
 
-    <!-- Копче за помош / инфо во горниот десен агол -->
-    <button id="info-btn" onclick="toggleDialog(true)">За апликацијата</button>
+    <!-- Button to toggle the info modal -->
+    <button id="info-btn" onclick="toggleDialog(true)">About App</button>
 
-    <!-- Дијалог / Модал прозорец со опис и упатство -->
+    <!-- Modal Dialog with App Info & Details -->
     <div id="info-modal" class="modal-overlay">
       <div class="modal-content">
-        <h2>Добредојдовте во SQLite Visual Editor</h2>
-        <p><strong>Опис на апликацијата:</strong><br>
-        Ова е визуелен уредувач за SQLite бази на податоци кој работи директно во вашиот веб-прелистувач преку Qt WebAssembly технологија.</p>
+        <h2>About WinSQLite Editor</h2>
+        <p>A native, high-performance SQLite visual management tool powered by <strong>C++ and Qt 6</strong>, compiled for WebAssembly.</p>
         
-        <p><strong>Како се работи:</strong></p>
+        <h3>Key Features & Capabilities</h3>
         <ul>
-          <li>Креирајте нова база или отворете постоечка SQLite податотека.</li>
-          <li>Прегледувајте табели, колони и содржини визуелно.</li>
-          <li>Извршувајте SQL прашања (queries) во реално време.</li>
+          <li><strong>sqlite-vec Support:</strong> Fully compatible with the <code>sqlite-vec</code> extension, allowing vector search inspection and vector embedding operations directly within your database.</li>
+          <li><strong>Visual Query Builder:</strong> Construct, execute, and analyze custom SQL queries with visual schema feedback and rapid execution timing.</li>
+          <li><strong>WebAssembly Native Performance:</strong> Operates directly in your browser with offline-first client-side file loading capabilities.</li>
         </ul>
-        <button onclick="toggleDialog(false)">Затвори</button>
+
+        <h3>Open Source & Collaboration</h3>
+        <p>This project is entirely open-source! You can explore the codebase, report issues, or contribute on GitHub:</p>
+        <p>👉 <a href="https://github.com/srdzank/WinSQLite-Editor" target="_blank" rel="noopener noreferrer">github.com/srdzank/WinSQLite-Editor</a></p>
+        
+        <p style="margin-top: 12px; background: #f8f9fa; padding: 10px; border-left: 3px solid #3498db; border-radius: 4px;">
+          💬 <strong>Open for Collaboration:</strong> If you are interested in custom feature integrations, systems architecture consulting, or collaborative development, feel free to reach out or open a discussion on GitHub.
+        </p>
+
+        <button onclick="toggleDialog(false)">Close</button>
         <div style="clear: both;"></div>
       </div>
     </div>
