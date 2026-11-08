@@ -13,18 +13,103 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
     <script defer src="https://cloud.umami.is/script.js" data-website-id="42e3d1fb-4d12-4ea0-9fc6-43cbe680d487"></script>
 
     <!--Set visual viewport size for mobile devices to the device size,
-        witch results in a scale of 1 and a 1:1 mapping between CSS pixels
+        which results in a scale of 1 and a 1:1 mapping between CSS pixels
         and Qt device independent pixels. -->
     <meta name="viewport" content="width=device-width, height=device-height, user-scalable=0"/>
 
     <title>sqlite_visual_editor</title>
     <style>
       /* Make the html body cover the entire (visual) viewport with no scroll bars. */
-      html, body { padding: 0; margin: 0; overflow: hidden; height: 100% }
+      html, body { padding: 0; margin: 0; overflow: hidden; height: 100%; font-family: sans-serif; }
       #screen { width: 100%; height: 100%; }
+
+      /* Стили за дијалогот (модал прозорец) */
+      .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+      }
+      .modal-content {
+          background: #ffffff;
+          padding: 25px 30px;
+          border-radius: 8px;
+          max-width: 500px;
+          width: 90%;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          text-align: left;
+          color: #333;
+      }
+      .modal-content h2 {
+          margin-top: 0;
+          color: #2c3e50;
+      }
+      .modal-content ul {
+          padding-left: 20px;
+      }
+      .modal-content button {
+          background-color: #3498db;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          font-size: 14px;
+          border-radius: 4px;
+          cursor: pointer;
+          float: right;
+          margin-top: 15px;
+      }
+      .modal-content button:hover {
+          background-color: #2980b9;
+      }
+
+      /* Копче за повторно отварање на упатството */
+      #info-btn {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          z-index: 999;
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 13px;
+      }
+      #info-btn:hover {
+          background: rgba(0, 0, 0, 0.9);
+      }
     </style>
   </head>
   <body onload="init()">
+
+    <!-- Копче за помош / инфо во горниот десен агол -->
+    <button id="info-btn" onclick="toggleDialog(true)">За апликацијата</button>
+
+    <!-- Дијалог / Модал прозорец со опис и упатство -->
+    <div id="info-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Добредојдовте во SQLite Visual Editor</h2>
+        <p><strong>Опис на апликацијата:</strong><br>
+        Ова е визуелен уредувач за SQLite бази на податоци кој работи директно во вашиот веб-прелистувач преку Qt WebAssembly технологија.</p>
+        
+        <p><strong>Како се работи:</strong></p>
+        <ul>
+          <li>Креирајте нова база или отворете постоечка SQLite податотека.</li>
+          <li>Прегледувајте табели, колони и содржини визуелно.</li>
+          <li>Извршувајте SQL прашања (queries) во реално време.</li>
+        </ul>
+        <button onclick="toggleDialog(false)">Затвори</button>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+
     <figure style="overflow:visible;" id="qtspinner">
       <center style="margin-top:1.5em; line-height:150%">
         <img src="qtlogo.svg" width="320" height="200" style="display:block"></img>
@@ -36,6 +121,11 @@ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
     <div id="screen"></div>
 
     <script type="text/javascript">
+        function toggleDialog(show) {
+            const modal = document.querySelector('#info-modal');
+            modal.style.display = show ? 'flex' : 'none';
+        }
+
         async function init()
         {
             const spinner = document.querySelector('#qtspinner');
